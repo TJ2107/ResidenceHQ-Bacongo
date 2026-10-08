@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Expense, UserProfile, AppSettings } from '../types';
-import { Plus, X, Trash2, Edit2, DollarSign, Calendar, Filter, Search, TrendingDown, Briefcase, Zap, Package, Wrench, MoreHorizontal, FileText, CheckCircle, XCircle, Clock, ChevronDown, ChevronUp } from 'lucide-react';
+import { Plus, X, Trash2, Edit2, DollarSign, Calendar, Filter, Search, TrendingDown, Briefcase, Zap, Package, Wrench, MoreHorizontal, FileText, CheckCircle, XCircle, Clock, ChevronDown, ChevronUp, RefreshCw } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn, OperationType, handleFirestoreError, logEvent, parseDate } from '../lib/utils';
 import { collection, query, orderBy, onSnapshot, addDoc, updateDoc, doc, deleteDoc, serverTimestamp, limit, writeBatch, getDocs, where, arrayUnion } from 'firebase/firestore';
@@ -170,9 +170,9 @@ export const ExpenseManagement = ({ user, settings }: { user: UserProfile, setti
     }
   };
 
-  const handleValidate = async (expense: Expense, status: 'Approved' | 'Rejected') => {
+  const handleValidate = async (expense: Expense, status: 'Approved' | 'Rejected' | 'Pending') => {
     if (!isAdmin) {
-      toast.error("Seuls les administrateurs ont le droit de valider ou rejeter les dépenses.");
+      toast.error("Seuls les administrateurs ont le droit de valider, rejeter ou retraiter les dépenses.");
       return;
     }
     try {
@@ -215,7 +215,7 @@ export const ExpenseManagement = ({ user, settings }: { user: UserProfile, setti
           await addDoc(collection(db, 'notifications'), {
             type: 'system',
             targetUserId: expense.recordedById,
-            message: `Votre dépense "${expense.description}" a été ${status === 'Approved' ? 'validée' : 'rejetée'} par ${user.username}.`,
+            message: `Votre dépense "${expense.description}" a été ${status === 'Approved' ? 'validée' : status === 'Rejected' ? 'rejetée' : 'remise en attente'} par ${user.username}.`,
             timestamp: serverTimestamp(),
             readBy: [user.id],
             handled: true
@@ -225,8 +225,8 @@ export const ExpenseManagement = ({ user, settings }: { user: UserProfile, setti
         }
       }
 
-      logEvent(user, 'Validation Dépense', `Dépense ${status === 'Approved' ? 'validée' : 'rejetée'} : ${expense.description} par ${user.username}.`);
-      toast.success(`Dépense ${status === 'Approved' ? 'validée' : 'rejetée'} avec succès`);
+      logEvent(user, 'Validation Dépense', `Dépense ${status === 'Approved' ? 'validée' : status === 'Rejected' ? 'rejetée' : 'remise en attente'} : ${expense.description} par ${user.username}.`);
+      toast.success(`Dépense ${status === 'Approved' ? 'validée' : status === 'Rejected' ? 'rejetée' : 'remise en attente'} avec succès`);
     } catch (error) {
       handleFirestoreError(error, OperationType.UPDATE, 'expenses');
     }
@@ -458,14 +458,23 @@ export const ExpenseManagement = ({ user, settings }: { user: UserProfile, setti
                           </td>
                           <td className="p-3 md:p-6">
                             <div className="flex gap-2">
-                              {isAdmin && expense.status === 'Pending' && (
+                              {isAdmin && (
                                 <>
-                                  <button onClick={() => handleValidate(expense, 'Approved')} className="p-2 text-green-600 hover:bg-green-50 rounded-full" title="Valider">
-                                    <CheckCircle className="w-4 h-4" />
-                                  </button>
-                                  <button onClick={() => handleValidate(expense, 'Rejected')} className="p-2 text-red-600 hover:bg-red-50 rounded-full" title="Rejeter">
-                                    <XCircle className="w-4 h-4" />
-                                  </button>
+                                  {expense.status === 'Pending' && (
+                                    <>
+                                      <button onClick={() => handleValidate(expense, 'Approved')} className="p-2 text-green-600 hover:bg-green-50 rounded-full" title="Valider">
+                                        <CheckCircle className="w-4 h-4" />
+                                      </button>
+                                      <button onClick={() => handleValidate(expense, 'Rejected')} className="p-2 text-red-600 hover:bg-red-50 rounded-full" title="Rejeter">
+                                        <XCircle className="w-4 h-4" />
+                                      </button>
+                                    </>
+                                  )}
+                                  {expense.status === 'Rejected' && (
+                                    <button onClick={() => handleValidate(expense, 'Pending')} className="p-2 text-blue-600 hover:bg-blue-50 rounded-full" title="Retraiter">
+                                      <RefreshCw className="w-4 h-4" />
+                                    </button>
+                                  )}
                                 </>
                               )}
                               {(isManagerOrAdmin || (user && user.id === expense.recordedById)) && (
