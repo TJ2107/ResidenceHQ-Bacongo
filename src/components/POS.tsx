@@ -717,7 +717,7 @@ ${savedClosureReport.notes ? `✍️ *OBSERVATIONS :*\n${savedClosureReport.note
           </div>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2.5 sm:gap-4 lg:gap-6">
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-5 xl:grid-cols-5 gap-2 sm:gap-3 lg:gap-4">
           {activeCategory === 'Products' ? (
             filteredProducts.map((product) => {
               const cartItem = cart.find(i => i.item.id === product.id && i.type === 'product');
@@ -730,24 +730,24 @@ ${savedClosureReport.notes ? `✍️ *OBSERVATIONS :*\n${savedClosureReport.note
                   onClick={() => addToCart(product, 'product')}
                   disabled={displayStock <= 0}
                   className={cn(
-                    "p-2 sm:p-4 md:p-3 lg:p-6 text-left bg-white border border-secondary/30 shadow-sm hover:shadow-xl hover:shadow-primary/10 transition-shadow rounded-xl sm:rounded-2xl transition-all group",
+                    "p-2 text-left bg-white border border-secondary/30 shadow-sm hover:shadow-xl hover:shadow-primary/10 transition-shadow rounded-xl transition-all group",
                     displayStock <= 0 && "opacity-50 grayscale cursor-not-allowed"
                   )}
                 >
-                  <div className="flex justify-between items-start gap-1 mb-1.5 sm:mb-4">
-                    <span className="text-[7px] sm:text-[10px] md:text-[8px] lg:text-[10px] font-bold uppercase tracking-widest text-primary/60 truncate max-w-[60px] sm:max-w-none">{product.category}</span>
+                  <div className="flex justify-between items-start gap-1 mb-1">
+                    <span className="text-[8px] font-bold uppercase tracking-widest text-primary/60 truncate">{product.category}</span>
                     <span className={cn(
-                      "px-1 py-0.5 text-[7.5px] sm:text-[10px] md:text-[8px] lg:text-[10px] font-bold uppercase border rounded-full shrink-0",
+                      "px-1 py-0.5 text-[8px] font-bold uppercase border rounded-full shrink-0",
                       displayStock <= LOW_STOCK_THRESHOLD ? "bg-red-50 text-red-600 border-red-100" : "bg-[#FDFBF7] text-[#2B2321]/60 border-secondary/30"
                     )}>
                       St: {displayStock}
                     </span>
                   </div>
-                  <h3 className="text-[10px] sm:text-lg md:text-xs lg:text-xl font-bold tracking-tight text-[#2B2321] mb-1 sm:mb-2 group-hover:text-primary transition-colors line-clamp-2 min-h-[1.5rem] sm:min-h-[2.5rem] md:min-h-[1.5rem] lg:min-h-[3rem]">{product.name}</h3>
-                  <div className="flex items-center justify-between mt-2 pt-2 sm:mt-4 sm:pt-4 border-t border-secondary/20">
-                    <p className="font-bold text-[10px] sm:text-xl md:text-sm lg:text-2xl text-primary">{product.price.toLocaleString()} <span className="text-[7px] sm:text-[10px] md:text-[8px] lg:text-xs font-bold uppercase tracking-widest text-primary/60">FCFA</span></p>
-                    <div className="w-5 h-5 sm:w-8 sm:h-8 md:w-6 md:h-6 lg:w-8 lg:h-8 rounded-full bg-[#FDFBF7] flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors text-primary shrink-0">
-                      <Plus className="w-3 h-3 sm:w-4 sm:h-4 md:w-3 md:h-3 lg:w-4 lg:h-4" />
+                  <h3 className="text-[10px] font-bold tracking-tight text-[#2B2321] mb-1 group-hover:text-primary transition-colors line-clamp-2 min-h-[1.5rem]">{product.name}</h3>
+                  <div className="flex items-center justify-between mt-1 pt-1 border-t border-secondary/20">
+                    <p className="font-bold text-[10px] text-primary">{product.price.toLocaleString()} <span className="text-[8px] font-bold uppercase tracking-widest text-primary/60">FCFA</span></p>
+                    <div className="w-5 h-5 rounded-full bg-[#FDFBF7] flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors text-primary shrink-0">
+                      <Plus className="w-3 h-3" />
                     </div>
                   </div>
                 </button>
@@ -764,24 +764,24 @@ ${savedClosureReport.notes ? `✍️ *OBSERVATIONS :*\n${savedClosureReport.note
                   onClick={() => addToCart(hall, 'hall')}
                   disabled={!isAvailable || isInCart}
                   className={cn(
-                    "p-2 sm:p-4 md:p-3 lg:p-6 text-left bg-white border border-secondary/30 shadow-sm hover:shadow-xl hover:shadow-primary/10 transition-shadow rounded-xl sm:rounded-2xl transition-all group",
+                    "p-2 text-left bg-white border border-secondary/30 shadow-sm hover:shadow-xl hover:shadow-primary/10 transition-shadow rounded-xl transition-all group",
                     (!isAvailable || isInCart) && "opacity-50 grayscale cursor-not-allowed"
                   )}
                 >
-                  <div className="flex justify-between items-start gap-1 mb-1.5 sm:mb-4">
-                    <span className="text-[7px] sm:text-[10px] md:text-[8px] lg:text-[10px] font-bold uppercase tracking-widest text-primary/60 truncate max-w-[60px] sm:max-w-none">{hall.type}</span>
+                  <div className="flex justify-between items-start gap-1 mb-1">
+                    <span className="text-[8px] font-bold uppercase tracking-widest text-primary/60 truncate">{hall.type}</span>
                     <span className={cn(
-                      "px-1 py-0.5 text-[7.5px] sm:text-[10px] md:text-[8px] lg:text-[10px] font-bold uppercase border rounded-full shrink-0",
+                      "px-1 py-0.5 text-[8px] font-bold uppercase border rounded-full shrink-0",
                       hall.status === 'Available' ? "bg-green-50 text-green-600 border-green-100" : "bg-red-50 text-red-600 border-red-100"
                     )}>
                       {hall.status === 'Available' ? 'Dispo' : 'Occupé'}
                     </span>
                   </div>
-                  <h3 className="text-[10px] sm:text-lg md:text-xs lg:text-xl font-bold tracking-tight text-[#2B2321] mb-1 sm:mb-2 group-hover:text-primary transition-colors line-clamp-2 min-h-[1.5rem] sm:min-h-[2.5rem] md:min-h-[1.5rem] lg:min-h-[3rem]">{hall.name}</h3>
-                  <div className="flex items-center justify-between mt-2 pt-2 sm:mt-4 sm:pt-4 border-t border-secondary/20">
-                    <p className="font-bold text-[10px] sm:text-xl md:text-sm lg:text-2xl text-primary">{hall.price.toLocaleString()} <span className="text-[7px] sm:text-[10px] md:text-[8px] lg:text-xs font-bold uppercase tracking-widest text-primary/60">FCFA</span></p>
-                    <div className="w-5 h-5 sm:w-8 sm:h-8 md:w-6 md:h-6 lg:w-8 lg:h-8 rounded-full bg-[#FDFBF7] flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors text-primary shrink-0">
-                      <LayoutGrid className="w-3 h-3 sm:w-4 sm:h-4 md:w-3 md:h-3 lg:w-4 lg:h-4" />
+                  <h3 className="text-[10px] font-bold tracking-tight text-[#2B2321] mb-1 group-hover:text-primary transition-colors line-clamp-2 min-h-[1.5rem]">{hall.name}</h3>
+                  <div className="flex items-center justify-between mt-1 pt-1 border-t border-secondary/20">
+                    <p className="font-bold text-[10px] text-primary">{hall.price.toLocaleString()} <span className="text-[8px] font-bold uppercase tracking-widest text-primary/60">FCFA</span></p>
+                    <div className="w-5 h-5 rounded-full bg-[#FDFBF7] flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors text-primary shrink-0">
+                      <LayoutGrid className="w-3 h-3" />
                     </div>
                   </div>
                 </button>
