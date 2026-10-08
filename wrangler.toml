@@ -1,0 +1,9 @@
+name = "residencehq"
+compatibility_date = "2024-07-29"
+
+[assets]
+directory = "./dist"
+
+[vars]
+# Add your environment variables here if needed
+# VITE_API_URL = "https://your-api.com"

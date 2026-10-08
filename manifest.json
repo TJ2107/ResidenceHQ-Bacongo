@@ -1,0 +1,21 @@
+{
+  "name": "Résidence HQ - Hôtel & Restaurant",
+  "short_name": "Résidence HQ",
+  "description": "Système de gestion hôtelière et point de vente",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FDFBF7",
+  "theme_color": "#2B2321",
+  "icons": [
+    {
+      "src": "https://picsum.photos/seed/retro/192/192",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://picsum.photos/seed/retro/512/512",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

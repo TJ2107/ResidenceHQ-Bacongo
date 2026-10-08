@@ -1,0 +1,508 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Application user with role-based access",
+      "type": "object",
+      "properties": {
+        "username": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "manager", "receptionist", "barman", "staff", "cook", "maintenance", "caissiere", "serveur", "valet_de_chambre", "chauffeur", "client"] },
+        "email": { "type": "string", "format": "email" }
+      },
+      "required": ["username", "role", "email"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "Inventory item",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "category": { "type": "string" },
+        "price": { "type": "number" },
+        "stock": { "type": "integer" }
+      },
+      "required": ["name", "category", "price", "stock"]
+    },
+    "Sale": {
+      "title": "Sale",
+      "description": "Transaction record",
+      "type": "object",
+      "properties": {
+        "items": { "type": "array" },
+        "totalPrice": { "type": "number" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "sellerId": { "type": "string" },
+        "sellerName": { "type": "string" },
+        "paymentMethod": { "type": "string", "enum": ["Cash", "Card", "Mobile Money", "Room Charge"] },
+        "roomId": { "type": "string" }
+      },
+      "required": ["items", "totalPrice", "timestamp", "sellerId", "paymentMethod"]
+    },
+    "Room": {
+      "title": "Room",
+      "description": "Hotel room details and status",
+      "type": "object",
+      "properties": {
+        "number": { "type": "string" },
+        "type": { "type": "string", "enum": ["Résidence 3 chambres", "Résidence 2 chambres", "Appartement 1 ch. + salon", "Chambre de Luxe", "Chambre Standard"] },
+        "price": { "type": "number" },
+        "status": { "type": "string", "enum": ["Available", "Occupied", "Cleaning", "Maintenance"] },
+        "currentGuestId": { "type": "string" },
+        "currentGuestName": { "type": "string" },
+        "checkInDate": { "type": "string", "format": "date-time" },
+        "expectedCheckOutDate": { "type": "string", "format": "date-time" }
+      },
+      "required": ["number", "type", "price", "status"]
+    },
+    "Guest": {
+      "title": "Guest",
+      "description": "Customer record in CRM",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "idNumber": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "preferences": { "type": "string" },
+        "totalStays": { "type": "integer" },
+        "lastStay": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "phone", "idNumber", "totalStays"]
+    },
+    "Booking": {
+      "title": "Booking",
+      "description": "Archived stay record",
+      "type": "object",
+      "properties": {
+        "roomId": { "type": "string" },
+        "roomNumber": { "type": "string" },
+        "guestId": { "type": "string" },
+        "guestName": { "type": "string" },
+        "checkInDate": { "type": "string", "format": "date-time" },
+        "checkOutDate": { "type": "string", "format": "date-time" },
+        "totalNights": { "type": "integer" },
+        "roomCharge": { "type": "number" },
+        "posCharges": { "type": "number" },
+        "totalPaid": { "type": "number" },
+        "paymentMethod": { "type": "string", "enum": ["Cash", "Card", "Mobile Money", "Room Charge"] },
+        "channel": { "type": "string", "enum": ["Direct", "OTA", "Agency", "Corporate"] },
+        "segment": { "type": "string", "enum": ["Leisure", "Business", "Group"] }
+      },
+      "required": ["roomId", "roomNumber", "guestId", "guestName", "checkInDate", "checkOutDate", "totalPaid"]
+    },
+    "Reservation": {
+      "title": "Reservation",
+      "description": "Future room booking",
+      "type": "object",
+      "properties": {
+        "roomId": { "type": "string" },
+        "roomNumber": { "type": "string" },
+        "guestId": { "type": "string" },
+        "guestName": { "type": "string" },
+        "guestPhone": { "type": "string" },
+        "checkInDate": { "type": "string", "format": "date-time" },
+        "checkOutDate": { "type": "string", "format": "date-time" },
+        "status": { "type": "string", "enum": ["Confirmed", "Cancelled", "CheckedIn"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "channel": { "type": "string", "enum": ["Direct", "OTA", "Agency", "Corporate"] },
+        "segment": { "type": "string", "enum": ["Leisure", "Business", "Group"] }
+      },
+      "required": ["roomId", "roomNumber", "guestId", "guestName", "checkInDate", "checkOutDate", "status", "createdAt"]
+    },
+    "Expense": {
+      "title": "Expense",
+      "description": "Financial cost record",
+      "type": "object",
+      "properties": {
+        "description": { "type": "string" },
+        "amount": { "type": "number" },
+        "category": { "type": "string", "enum": ["Salaries", "Utilities", "Stock", "Maintenance", "Other"] },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "recordedBy": { "type": "string" }
+      },
+      "required": ["description", "amount", "category", "timestamp", "recordedBy"]
+    },
+    "PoolTicket": {
+      "title": "Pool Ticket",
+      "description": "Access ticket for the swimming pool",
+      "type": "object",
+      "properties": {
+        "ticketId": { "type": "string" },
+        "type": { "type": "string", "enum": ["Adult", "Child"] },
+        "price": { "type": "number" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "isValid": { "type": "boolean" }
+      },
+      "required": ["ticketId", "type", "price", "timestamp"]
+    },
+    "AppSettings": {
+      "title": "AppSettings",
+      "description": "Global application appearance settings",
+      "type": "object",
+      "properties": {
+        "theme": { "type": "string", "enum": ["default", "modern", "classic", "nature", "custom"] },
+        "primaryColor": { "type": "string" },
+        "secondaryColor": { "type": "string" },
+        "accentColor": { "type": "string" },
+        "logoUrl": { "type": "string" },
+        "hotelName": { "type": "string" }
+      },
+      "required": ["theme", "primaryColor", "secondaryColor", "accentColor", "hotelName"]
+    },
+    "EventLog": {
+      "title": "EventLog",
+      "description": "System activity log",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "username": { "type": "string" },
+        "userRole": { "type": "string" },
+        "action": { "type": "string" },
+        "details": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "username", "userRole", "action", "details", "timestamp"]
+    },
+    "UserSession": {
+      "title": "UserSession",
+      "description": "User presence and session info",
+      "type": "object",
+      "properties": {
+        "username": { "type": "string" },
+        "role": { "type": "string" },
+        "lastActive": { "type": "string", "format": "date-time" }
+      },
+      "required": ["username", "role", "lastActive"]
+    },
+    "Notification": {
+      "title": "Notification",
+      "description": "System notification or alert",
+      "type": "object",
+      "properties": {
+        "type": { "type": "string", "enum": ["low_stock", "restock", "system"] },
+        "message": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "readBy": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["type", "message", "timestamp", "readBy"]
+    },
+    "Review": {
+      "title": "Review",
+      "description": "Customer feedback and rating",
+      "type": "object",
+      "properties": {
+        "guestId": { "type": "string" },
+        "guestName": { "type": "string" },
+        "rating": { "type": "integer" },
+        "comment": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "category": { "type": "string", "enum": ["Room", "Service", "Food", "Pool", "General"] }
+      },
+      "required": ["guestId", "guestName", "rating", "comment", "timestamp", "category"]
+    },
+    "CleaningTask": {
+      "title": "CleaningTask",
+      "description": "Room or Hall cleaning task with photo validation",
+      "type": "object",
+      "properties": {
+        "roomId": { "type": "string" },
+        "roomNumber": { "type": "string" },
+        "hallId": { "type": "string" },
+        "hallName": { "type": "string" },
+        "cleanerId": { "type": "string" },
+        "cleanerName": { "type": "string" },
+        "photoUrl": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "status": { "type": "string", "enum": ["Pending", "Validated", "Rejected"] },
+        "notes": { "type": "string" }
+      },
+      "required": ["cleanerId", "cleanerName", "photoUrl", "timestamp", "status"]
+    },
+    "Hall": {
+      "title": "Hall",
+      "description": "Specialized rooms like Party Hall, Hammam, etc.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "type": { "type": "string", "enum": ["Salle de Fête", "Salle Hammam", "Salle de Massage", "Salle de Pied"] },
+        "price": { "type": "number" },
+        "status": { "type": "string", "enum": ["Available", "Occupied", "Cleaning", "Maintenance"] },
+        "currentGuestId": { "type": "string" },
+        "currentGuestName": { "type": "string" },
+        "checkInDate": { "type": "string", "format": "date-time" },
+        "expectedCheckOutDate": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "type", "price", "status"]
+    },
+    "MaintenanceTask": {
+      "title": "MaintenanceTask",
+      "description": "Report of an equipment or location replacement/repair task",
+      "type": "object",
+      "properties": {
+        "location": { "type": "string" },
+        "note": { "type": "string" },
+        "photoBefore": { "type": "string" },
+        "photoAfter": { "type": "string" },
+        "status": { "type": "string", "enum": ["Pending", "Validated", "Rejected"] },
+        "reporterId": { "type": "string" },
+        "reporterName": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "validatedBy": { "type": "string" },
+        "validatedById": { "type": "string" },
+        "validatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["location", "note", "photoBefore", "photoAfter", "status", "reporterId", "reporterName", "timestamp"]
+    },
+    "ChatMessage": {
+      "title": "ChatMessage",
+      "description": "A user-to-user or channel chat message",
+      "type": "object",
+      "properties": {
+        "senderId": { "type": "string" },
+        "senderName": { "type": "string" },
+        "senderRole": { "type": "string" },
+        "text": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "channelId": { "type": "string" }
+      },
+      "required": ["senderId", "senderName", "senderRole", "text", "timestamp", "channelId"]
+    },
+    "CashClosure": {
+      "title": "CashClosure",
+      "description": "Cash register closing report",
+      "type": "object",
+      "properties": {
+        "cashierId": { "type": "string" },
+        "cashierName": { "type": "string" },
+        "cashierRole": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "cashSales": { "type": "number" },
+        "cardSales": { "type": "number" },
+        "mobileSales": { "type": "number" },
+        "roomSales": { "type": "number" },
+        "totalSales": { "type": "number" },
+        "salesCount": { "type": "integer" },
+        "physicalCashCounted": { "type": "number" },
+        "discrepancy": { "type": "number" },
+        "location": { "type": "string" },
+        "totalExpenses": { "type": "number" },
+        "expensesCount": { "type": "integer" },
+        "expensesDetails": { "type": "array" },
+        "stockSummary": { "type": "object" },
+        "stockDetails": { "type": "array" },
+        "notes": { "type": "string" }
+      },
+      "required": [
+        "cashierId", "cashierName", "cashierRole", "timestamp",
+        "cashSales", "cardSales", "mobileSales", "roomSales",
+        "totalSales", "salesCount", "physicalCashCounted", "discrepancy"
+      ]
+    },
+    "MonthlyMaintenanceTask": {
+      "title": "MonthlyMaintenanceTask",
+      "description": "Monthly scheduled preventive maintenance task",
+      "type": "object",
+      "properties": {
+        "equipmentType": { "type": "string", "enum": ["Split", "Bache_Eau", "Groupe_Electrogene", "Autre"] },
+        "title": { "type": "string" },
+        "location": { "type": "string" },
+        "targetMonth": { "type": "string" },
+        "scheduledDate": { "type": "string" },
+        "status": { "type": "string", "enum": ["Scheduled", "In_Progress", "Completed", "Overdue"] },
+        "createdById": { "type": "string" },
+        "createdByName": { "type": "string" }
+      },
+      "required": ["equipmentType", "title", "location", "targetMonth", "scheduledDate", "status", "createdById", "createdByName"]
+    },
+    "DailyMaintenanceChecklist": {
+      "title": "DailyMaintenanceChecklist",
+      "description": "Daily technical inspection checklist for GE, Water tank, and Pool",
+      "type": "object",
+      "properties": {
+        "date": { "type": "string" },
+        "technicianId": { "type": "string" },
+        "technicianName": { "type": "string" }
+      },
+      "required": ["date", "technicianId", "technicianName"]
+    },
+    "Driver": {
+      "title": "Driver",
+      "description": "Brazzaville express driver status and coordinates",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "status": { "type": "string", "enum": ["Disponible", "Occupé", "Hors-ligne"] },
+        "vehicleType": { "type": "string", "enum": ["Berline", "SUV", "Moto"] }
+      },
+      "required": ["name", "phone", "status", "vehicleType"]
+    },
+    "Ride": {
+      "title": "Ride",
+      "description": "Brazzaville express booking request and status",
+      "type": "object",
+      "properties": {
+        "clientId": { "type": "string" },
+        "clientName": { "type": "string" },
+        "pickupZone": { "type": "string" },
+        "destinationZone": { "type": "string" },
+        "status": { "type": "string", "enum": ["Requested", "Accepted", "InRoute", "Started", "Finished", "Cancelled", "Rejected"] }
+      },
+      "required": ["clientId", "clientName", "pickupZone", "destinationZone", "status"]
+    },
+    "RideMessage": {
+      "title": "RideMessage",
+      "description": "In-app chat message between client and driver",
+      "type": "object",
+      "properties": {
+        "rideId": { "type": "string" },
+        "sender": { "type": "string", "enum": ["client", "driver"] },
+        "text": { "type": "string" }
+      },
+      "required": ["rideId", "sender", "text"]
+    },
+    "UserLoyalty": {
+      "title": "UserLoyalty",
+      "description": "Loyalty points account",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "points": { "type": "integer" }
+      },
+      "required": ["userId", "points"]
+    },
+    "AppUpdate": {
+      "title": "AppUpdate",
+      "description": "Application version release notes and update notifications",
+      "type": "object",
+      "properties": {
+        "version": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "isMandatory": { "type": "boolean" },
+        "publishedAt": { "type": "string", "format": "date-time" },
+        "publishedBy": { "type": "string" },
+        "publishedById": { "type": "string" }
+      },
+      "required": ["version"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Inventory items"
+    },
+    "/sales/{saleId}": {
+      "schema": "Sale",
+      "description": "Sales records"
+    },
+    "/rooms/{roomId}": {
+      "schema": "Room",
+      "description": "Hotel rooms management"
+    },
+    "/pool_tickets/{ticketId}": {
+      "schema": "PoolTicket",
+      "description": "Pool access tickets"
+    },
+    "/guests/{guestId}": {
+      "schema": "Guest",
+      "description": "Customer records"
+    },
+    "/bookings/{bookingId}": {
+      "schema": "Booking",
+      "description": "Stay history"
+    },
+    "/reservations/{reservationId}": {
+      "schema": "Reservation",
+      "description": "Future room bookings"
+    },
+    "/expenses/{expenseId}": {
+      "schema": "Expense",
+      "description": "Financial records"
+    },
+    "/settings/{settingId}": {
+      "schema": "AppSettings",
+      "description": "Global application settings"
+    },
+    "/event_logs/{logId}": {
+      "schema": "EventLog",
+      "description": "System activity logs"
+    },
+    "/sessions/{userId}": {
+      "schema": "UserSession",
+      "description": "User presence data"
+    },
+    "/notifications/{notificationId}": {
+      "schema": "Notification",
+      "description": "System notifications"
+    },
+    "/reviews/{reviewId}": {
+      "schema": "Review",
+      "description": "Customer reviews and feedback"
+    },
+    "/cleaning_tasks/{taskId}": {
+      "schema": "CleaningTask",
+      "description": "Housekeeping tasks"
+    },
+    "/halls/{hallId}": {
+      "schema": "Hall",
+      "description": "Halls and specialized rooms management"
+    },
+    "/maintenance_tasks/{taskId}": {
+      "schema": "MaintenanceTask",
+      "description": "Equipment repair and replacement tracking reports"
+    },
+    "/maintenance_schedules/{scheduleId}": {
+      "schema": "MonthlyMaintenanceTask",
+      "description": "Monthly maintenance planning schedule"
+    },
+    "/maintenance_daily_checklists/{checklistId}": {
+      "schema": "DailyMaintenanceChecklist",
+      "description": "Daily maintenance checklist entries for generator, water tank and pool"
+    },
+    "/messages/{messageId}": {
+      "schema": "ChatMessage",
+      "description": "User conversation messages"
+    },
+    "/cash_closures/{closureId}": {
+      "schema": "CashClosure",
+      "description": "Cashier closing registers"
+    },
+    "/shisha_products/{shishaProductId}": {
+      "schema": "ShishaProduct",
+      "description": "Chicha flavor and equipment stock items"
+    },
+    "/shisha_sales/{shishaSaleId}": {
+      "schema": "ShishaSale",
+      "description": "Isolated Chicha sales records (separate from general accounting)"
+    },
+    "/quotes_invoices/{docId}": {
+      "schema": "QuoteInvoice",
+      "description": "Proforma quotes and official hotel invoices"
+    },
+    "/drivers/{driverId}": {
+      "schema": "Driver",
+      "description": "Express drivers"
+    },
+    "/rides/{rideId}": {
+      "schema": "Ride",
+      "description": "Express rides and bookings"
+    },
+    "/ride_messages/{messageId}": {
+      "schema": "RideMessage",
+      "description": "Express ride chat messages"
+    },
+    "/user_loyalty/{userId}": {
+      "schema": "UserLoyalty",
+      "description": "Client loyalty points and counts"
+    },
+    "/app_updates/{updateId}": {
+      "schema": "AppUpdate",
+      "description": "Version update announcements and changelogs"
+    }
+  }
+}

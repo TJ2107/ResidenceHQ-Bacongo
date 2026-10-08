@@ -1,0 +1,45 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global wildcard access for all collections
+    match /{document=**} {
+      allow read, write: if true;
+    }
+
+    // Explicit collection matches for absolute clarity
+    match /users/{userId} { allow read, write: if true; }
+    match /products/{productId} { allow read, write: if true; }
+    match /sales/{saleId} { allow read, write: if true; }
+    match /rooms/{roomId} { allow read, write: if true; }
+    match /guests/{guestId} { allow read, write: if true; }
+    match /bookings/{bookingId} { allow read, write: if true; }
+    match /reservations/{reservationId} { allow read, write: if true; }
+    match /expenses/{expenseId} { allow read, write: if true; }
+    match /pool_tickets/{ticketId} { allow read, write: if true; }
+    match /cleaning_tasks/{taskId} { allow read, write: if true; }
+    match /maintenance_tasks/{taskId} { allow read, write: if true; }
+    match /maintenance_schedules/{scheduleId} { allow read, write: if true; }
+    match /maintenance_daily_checklists/{checklistId} { allow read, write: if true; }
+    match /reviews/{reviewId} { allow read, write: if true; }
+    match /settings/{settingId} { allow read, write: if true; }
+    match /event_logs/{logId} { allow read, write: if true; }
+    match /sessions/{userId} { allow read, write: if true; }
+    match /notifications/{notificationId} { allow read, write: if true; }
+    match /messages/{messageId} { allow read, write: if true; }
+    match /cash_closures/{closureId} { allow read, write: if true; }
+    match /shisha_products/{shishaProductId} { allow read, write: if true; }
+    match /shisha_sales/{shishaSaleId} { allow read, write: if true; }
+    match /warehouse_products/{productId} { allow read, write: if true; }
+    match /warehouse_movements/{movementId} { allow read, write: if true; }
+    match /quotes_invoices/{docId} { allow read, write: if true; }
+    match /drivers/{driverId} { allow read, write: if true; }
+    match /rides/{rideId} { allow read, write: if true; }
+    match /ride_messages/{messageId} { allow read, write: if true; }
+    match /user_loyalty/{userId} { allow read, write: if true; }
+    match /loyalty/{userId} { allow read, write: if true; }
+    match /vehicle_expenses/{expenseId} { allow read, write: if true; }
+    match /app_updates/{updateId} { allow read, write: if true; }
+    match /halls/{hallId} { allow read, write: if true; }
+  }
+}

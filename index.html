@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0D5C53" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Résidence HQ" />
+    <link rel="apple-touch-icon" href="/logo.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <title>Remix Residence HQ</title>
+    <meta name="description" content="Système complet de gestion pour Résidence HQ : POS, Stock, Restaurant et Hôtel." />
+    <meta property="og:title" content="Remix Residence HQ" />
+    <meta property="og:description" content="Système complet de gestion pour Résidence HQ : POS, Stock, Restaurant et Hôtel." />
+    <script>
+      (function() {
+        function shouldSuppress(msg) {
+          if (!msg) return false;
+          var s = String(msg);
+          return (
+            s.indexOf('ca9') !== -1 ||
+            s.indexOf('b815') !== -1 ||
+            s.indexOf('INTERNAL ASSERTION FAILED') !== -1 ||
+            s.indexOf('Unexpected state') !== -1 ||
+            s.indexOf('ve":-1') !== -1 ||
+            s.indexOf('ApiProjectMapError') !== -1 ||
+            s.indexOf('gm_authFailure') !== -1
+          );
+        }
+
+        var origConsoleError = console.error;
+        console.error = function() {
+          var full = '';
+          for (var i = 0; i < arguments.length; i++) {
+            var a = arguments[i];
+            full += ' ' + (a && a.message ? a.message + ' ' + (a.stack || '') : String(a || ''));
+          }
+          if (shouldSuppress(full)) {
+            return;
+          }
+          origConsoleError.apply(console, arguments);
+        };
+
+        window.addEventListener('error', function(event) {
+          var msg = (event.message || '') + ' ' + (event.error ? (event.error.message || '') + ' ' + (event.error.stack || '') : '');
+          if (shouldSuppress(msg)) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            return true;
+          }
+        }, true);
+
+        window.addEventListener('unhandledrejection', function(event) {
+          var r = event.reason;
+          var msg = r ? (r.message || '') + ' ' + (r.stack || '') + ' ' + String(r) : '';
+          if (shouldSuppress(msg)) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            return true;
+          }
+        }, true);
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <script>
+      // Désactiver et désenregistrer le Service Worker obsolète pour éviter les problèmes de cache
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then((registrations) => {
+          for (let registration of registrations) {
+            registration.unregister().then((success) => {
+              if (success) console.log('Service Worker désenregistré avec succès.');
+            });
+          }
+        });
+      }
+      // Vider tous les caches du navigateur pour garantir le chargement de la dernière version
+      if ('caches' in window) {
+        caches.keys().then((keys) => {
+          keys.forEach((key) => {
+            caches.delete(key).then(() => {
+              console.log('Cache vidé :', key);
+            });
+          });
+        });
+      }
+    </script>
+  </body>
+</html>
+

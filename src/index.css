@@ -1,0 +1,165 @@
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+@theme {
+  --font-sans: "Calibri", "Segoe UI", Arial, sans-serif;
+  --font-serif: "Calibri", "Segoe UI", Arial, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --color-primary: var(--primary-color);
+  --color-secondary: var(--secondary-color);
+  --color-accent: var(--accent-color);
+  --color-emerald-deep: #0D5C53;
+  --color-gold-champagne: #C5A059;
+  --color-ivory: #FBF9F5;
+  --color-linen: #F4F0EA;
+  --color-warm-border: #EBE5DF;
+}
+
+:root {
+  --primary-color: #0D5C53;
+  --secondary-color: #C5A059;
+  --accent-color: #D4AF37;
+}
+
+/* Universal Ultra-Thin & Discreet Scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(28, 35, 33, 0.18) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgba(28, 35, 33, 0.15);
+  border-radius: 9999px;
+  transition: background-color 0.2s ease;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(28, 35, 33, 0.32);
+}
+
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+body {
+  font-family: "Calibri", "Segoe UI", Arial, sans-serif;
+  background-color: #FBF9F5;
+  color: #1C2321;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.6;
+}
+
+h1, h2, h3, .font-serif-title {
+  font-family: "Calibri", "Segoe UI", Arial, sans-serif;
+  font-weight: 700;
+}
+
+@layer utilities {
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  .hide-scrollbar::-webkit-scrollbar,
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+  
+  .hide-scrollbar,
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .custom-scrollbar,
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(28, 35, 33, 0.16) transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar,
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track,
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb,
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: rgba(28, 35, 33, 0.15);
+    border-radius: 9999px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover,
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(28, 35, 33, 0.32);
+  }
+  
+  .glass-card {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(12px);
+    border: 1px solid #EBE5DF;
+  }
+
+  .aura-card {
+    background-color: #FFFFFF;
+    border: 1px solid #EBE5DF;
+    box-shadow: 0 4px 20px -2px rgba(13, 92, 83, 0.04), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
+  }
+
+  .gold-badge {
+    background: rgba(197, 160, 89, 0.12);
+    color: #93712C;
+    border: 1px solid rgba(197, 160, 89, 0.35);
+  }
+
+  .emerald-badge {
+    background: rgba(13, 92, 83, 0.08);
+    color: #0D5C53;
+    border: 1px solid rgba(13, 92, 83, 0.2);
+  }
+}
+
+/* Global structural density refinement for application modules */
+.module-card, .dashboard-module-card {
+  padding: 1.5rem !important;
+  border-radius: 1rem !important;
+}
+
+/* Responsive typography boost: +1px for phone and tablet formats */
+@media (max-width: 1024px) {
+  html {
+    font-size: 17px;
+  }
+  
+  .text-\[7px\], .text-\[7\.5px\] { font-size: 8.5px !important; }
+  .text-\[8px\] { font-size: 9px !important; }
+  .text-\[9px\] { font-size: 10px !important; }
+  .text-\[10px\] { font-size: 11px !important; }
+  .text-\[11px\] { font-size: 12px !important; }
+  .text-\[12px\] { font-size: 13px !important; }
+  .text-\[13px\] { font-size: 14px !important; }
+  .text-\[14px\] { font-size: 15px !important; }
+}
+
+@media (max-width: 640px) {
+  html {
+    font-size: 15px;
+  }
+}
+
+
